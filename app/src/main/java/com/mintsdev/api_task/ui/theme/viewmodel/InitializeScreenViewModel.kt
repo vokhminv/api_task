@@ -10,9 +10,11 @@ import kotlinx.coroutines.launch
 
 
 class InitializeScreenViewModel: ViewModel() {
-    private val _apiAddress = MutableLiveData<String>()
-    val apiAddress: LiveData<String> = _apiAddress
+    private var _apiAddress = MutableLiveData<String>()
+    var apiAddress: LiveData<String> = _apiAddress
 
+    private val _connectionStatus = MutableLiveData<String>()
+    val connectionStatus: LiveData<String> = _connectionStatus
 
 
     fun fetchApiAddress() {
@@ -20,12 +22,15 @@ class InitializeScreenViewModel: ViewModel() {
                 try {
                     val response = ApiClient.apiService.getApiAddress(Constants.appName, Constants.v)
                     if (response.isSuccessful) {
-                        _apiAddress.value = response.body()?.route
+                        _apiAddress.value = "Recieved"
+                        _connectionStatus.value = "Connected"
                     } else {
-                        println("error")
+                        _apiAddress.value = "Unavailable"
+                        _connectionStatus.value = "Not connected"
                     }
                 } catch (e: Exception){
                     e.printStackTrace()
+                    _connectionStatus.value = "Not connected"
                 }
             }
 
