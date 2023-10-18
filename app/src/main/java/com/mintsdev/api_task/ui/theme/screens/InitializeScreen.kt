@@ -1,6 +1,8 @@
 package com.mintsdev.api_task.ui.theme.screens
 
+
 import android.widget.Toast
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,11 +19,12 @@ import com.mintsdev.api_task.ui.theme.viewmodel.InitializeScreenViewModel
 
 
 
+
 @Composable
 fun InitializeScreen(viewModel: InitializeScreenViewModel) {
 
-    val apiAddress by viewModel.apiAddress.observeAsState(initial = "")
-    val connectionStatus by viewModel.connectionStatus.observeAsState(initial = "Press Button to check")
+    val apiAddress by viewModel.apiAddress.observeAsState(initial = "not recieved yet")
+    val connectionStatus by viewModel.connectionStatus.observeAsState(initial = "Press button to check")
 
     val context = LocalContext.current
 
@@ -32,7 +35,7 @@ fun InitializeScreen(viewModel: InitializeScreenViewModel) {
     ) {
         Text(text = "API Address: $apiAddress")
         Text(text = "Internet Status: $connectionStatus")
-        Button(onClick = { viewModel.fetchApiAddress() }) {
+        Button(onClick = { viewModel.fetchApiAddress(context) }) {
             Text(text = "Fetch API Address")
         }
         Button(onClick = {
