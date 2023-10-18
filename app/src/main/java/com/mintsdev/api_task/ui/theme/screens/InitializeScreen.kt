@@ -37,7 +37,7 @@ fun InitializeScreen(viewModel: InitializeScreenViewModel) {
         }
         Button(onClick = {
                          Toast.makeText(context, "ha-ha, not now", Toast.LENGTH_LONG).show()
-        }, enabled = apiAddress.isNotEmpty()) {
+        }, enabled = apiAddress == "Recieved") {
             Text(text = "Go to Auth")
         }
     }
