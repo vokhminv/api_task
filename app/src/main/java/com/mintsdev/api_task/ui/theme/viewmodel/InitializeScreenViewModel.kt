@@ -10,11 +10,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mintsdev.api_task.api.ApiClient
-import com.mintsdev.api_task.api.Constants
+import com.mintsdev.api_task.api.AppInfo
 import kotlinx.coroutines.launch
 
 
-class InitializeScreenViewModel: ViewModel() {
+class InitializeScreenViewModel : ViewModel() {
     private var _apiAddress = MutableLiveData<String>()
     var apiAddress: LiveData<String> = _apiAddress
 
@@ -22,7 +22,8 @@ class InitializeScreenViewModel: ViewModel() {
     val connectionStatus: LiveData<String> = _connectionStatus
 
     fun isInternetAvailable(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val network = connectivityManager.activeNetwork
@@ -41,13 +42,12 @@ class InitializeScreenViewModel: ViewModel() {
     }
 
 
-
     fun fetchApiAddress(context: Context) {
         if (isInternetAvailable(context)) {
             viewModelScope.launch {
                 try {
                     val response =
-                        ApiClient.apiService.getApiAddress(Constants.appName, Constants.v)
+                        ApiClient.apiService.getApiAddress(AppInfo.appName, AppInfo.v)
                     if (response.isSuccessful) {
                         _apiAddress.value = "Recieved"
                         _connectionStatus.value = "Connected"

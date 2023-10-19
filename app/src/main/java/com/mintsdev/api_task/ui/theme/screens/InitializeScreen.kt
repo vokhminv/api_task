@@ -14,6 +14,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavController
 
 import com.mintsdev.api_task.ui.theme.viewmodel.InitializeScreenViewModel
 
@@ -21,7 +22,7 @@ import com.mintsdev.api_task.ui.theme.viewmodel.InitializeScreenViewModel
 
 
 @Composable
-fun InitializeScreen(viewModel: InitializeScreenViewModel) {
+fun InitializeScreen(viewModel: InitializeScreenViewModel, navController: NavController) {
 
     val apiAddress by viewModel.apiAddress.observeAsState(initial = "not recieved yet")
     val connectionStatus by viewModel.connectionStatus.observeAsState(initial = "Press button to check")
@@ -39,8 +40,9 @@ fun InitializeScreen(viewModel: InitializeScreenViewModel) {
             Text(text = "Fetch API Address")
         }
         Button(onClick = {
-                         Toast.makeText(context, "ha-ha, not now", Toast.LENGTH_LONG).show()
-        }, enabled = apiAddress == "Recieved") {
+                         navController.navigate("loginScreen")
+        },
+            enabled = apiAddress == "Recieved") {
             Text(text = "Go to Auth")
         }
     }
