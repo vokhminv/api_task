@@ -8,8 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.mintsdev.api_task.ui.theme.Api_taskTheme
+import com.mintsdev.api_task.ui.theme.screens.CatalogScreen
 import com.mintsdev.api_task.ui.theme.screens.InitializeScreen
 import com.mintsdev.api_task.ui.theme.screens.LoginScreen
+import com.mintsdev.api_task.ui.theme.viewmodel.CatalogViewModel
 import com.mintsdev.api_task.ui.theme.viewmodel.InitializeScreenViewModel
 import com.mintsdev.api_task.ui.theme.viewmodel.LoginViewModel
 
@@ -30,6 +32,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("loginScreen") {
                         LoginScreen(viewModel = LoginViewModel(), navController = navController)
+                    }
+                    composable("catalogScreen"){
+                        CatalogScreen(viewModel = CatalogViewModel(), navController = navController)
                     }
                 }
 

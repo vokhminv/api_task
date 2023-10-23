@@ -9,7 +9,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mintsdev.api_task.api.ApiClient
+
+import com.mintsdev.api_task.api.ApiClientInit
 import com.mintsdev.api_task.api.AppInfo
 import kotlinx.coroutines.launch
 
@@ -47,12 +48,13 @@ class InitializeScreenViewModel : ViewModel() {
             viewModelScope.launch {
                 try {
                     val response =
-                        ApiClient.apiService.getApiAddress(AppInfo.appName, AppInfo.v)
+                        ApiClientInit.apiServiceInit.getApiAddress(AppInfo.appName, AppInfo.v)
                     if (response.isSuccessful) {
-                        _apiAddress.value = "Recieved"
+                        _apiAddress.value = response.body()?.route
                         _connectionStatus.value = "Connected"
                     } else {
                         _apiAddress.value = "Unavailable"
+                        _connectionStatus.value = "Not connected"
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()

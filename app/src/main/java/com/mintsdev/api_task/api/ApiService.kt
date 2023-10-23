@@ -7,16 +7,21 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
+import retrofit2.http.Url
 
-interface ApiService {
+interface ApiServiceInit {
     @GET("/routes/")
     suspend fun getApiAddress(
         @Query("appName") appName: String,
         @Query("v") v: Int
     ) : Response<RouteResponse>
 
+
+}
+
+interface ApiServiceMain {
     @FormUrlEncoded
-    @POST("{api_address}/users/login/")
+    @POST("/users/login/")
     suspend fun getToken(
         @Field("login") login: String,
         @Field("password") password: String,

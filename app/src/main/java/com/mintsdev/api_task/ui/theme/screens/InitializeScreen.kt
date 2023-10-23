@@ -42,7 +42,7 @@ fun InitializeScreen(viewModel: InitializeScreenViewModel, navController: NavCon
         Button(onClick = {
                          navController.navigate("loginScreen")
         },
-            enabled = apiAddress == "Recieved") {
+            enabled = viewModel.apiAddress.isInitialized) {
             Text(text = "Go to Auth")
         }
     }

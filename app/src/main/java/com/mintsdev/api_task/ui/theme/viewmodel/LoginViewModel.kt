@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mintsdev.api_task.api.ApiClient
+
+import com.mintsdev.api_task.api.ApiClientMain
 import com.mintsdev.api_task.api.AuthInfo
 import kotlinx.coroutines.launch
 
@@ -15,7 +16,7 @@ class LoginViewModel : ViewModel() {
     fun authenticate() {
         viewModelScope.launch {
             try {
-                val response = ApiClient.apiService.getToken(
+                val response = ApiClientMain.apiServiceMain.getToken(
                     AuthInfo.login,
                     AuthInfo.password,
                     AuthInfo.devman,
@@ -25,7 +26,7 @@ class LoginViewModel : ViewModel() {
                 )
                 if (response.isSuccessful) {
                     val tokenResponse = response.body()
-                    _token.value = tokenResponse?.token ?: "where is this fucking token"
+                    _token.value = tokenResponse?.token
                 } else {
 
                 }

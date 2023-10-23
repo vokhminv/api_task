@@ -22,12 +22,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mintsdev.api_task.ui.theme.viewmodel.LoginViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
-    var username by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
     val token by viewModel.token.observeAsState(initial = "")
 
     Column(
@@ -38,33 +36,20 @@ fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
         verticalArrangement = Arrangement.Center
     ) {
         Text(text = "token: $token")
-        TextField(
-            value = username,
-            onValueChange = { username = it },
-            label = { Text("username") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        )
-        TextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("password") },
-            visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-        )
         Button(
             onClick = {
                 viewModel.authenticate()
-
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
+            }
         ) {
-            Text("try to login")
+            Text("send consts to get token")
+        }
+        Button(
+            onClick = {
+                navController.navigate("catalogScreen")
+            },
+            enabled = viewModel.token.isInitialized
+        ) {
+            Text("go next to catalog")
         }
     }
 }
