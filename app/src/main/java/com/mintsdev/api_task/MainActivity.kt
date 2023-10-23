@@ -31,10 +31,16 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable("loginScreen") {
-                        LoginScreen(viewModel = LoginViewModel(), navController = navController)
+                        LoginScreen(
+                            viewModel = LoginViewModel(),
+                            navController = navController
+                        )
                     }
                     composable("catalogScreen"){
-                        CatalogScreen(viewModel = CatalogViewModel(), navController = navController)
+                        CatalogScreen(
+                            viewModel = CatalogViewModel(),
+                            navController = navController
+                        )
                     }
                 }
 

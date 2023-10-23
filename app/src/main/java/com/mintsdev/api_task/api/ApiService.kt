@@ -5,6 +5,7 @@ import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 import retrofit2.http.Url
@@ -15,8 +16,6 @@ interface ApiServiceInit {
         @Query("appName") appName: String,
         @Query("v") v: Int
     ) : Response<RouteResponse>
-
-
 }
 
 interface ApiServiceMain {
@@ -30,6 +29,7 @@ interface ApiServiceMain {
         @Field("devavs") devavs: String,
         @Field("devaid") devaid: String
     ): Response<TokenResponse>
+
 }
 
 data class RouteResponse(
