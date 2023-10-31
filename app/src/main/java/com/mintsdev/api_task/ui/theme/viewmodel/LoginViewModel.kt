@@ -3,14 +3,11 @@ package com.mintsdev.api_task.ui.theme.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mintsdev.api_task.api.ApiClientMain
 import com.mintsdev.api_task.api.AuthInfo
 import com.mintsdev.api_task.datastore.StoreManager
-
 import kotlinx.coroutines.launch
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
@@ -47,7 +44,4 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    suspend fun getStoredToken(): String? {
-        return storeManager.getToken()
-    }
 }
