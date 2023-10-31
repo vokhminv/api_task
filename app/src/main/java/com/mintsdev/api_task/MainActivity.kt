@@ -3,7 +3,6 @@ package com.mintsdev.api_task
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -32,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("loginScreen") {
                         LoginScreen(
-                            viewModel = LoginViewModel(),
+                            viewModel = LoginViewModel(application),
                             navController = navController
                         )
                     }

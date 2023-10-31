@@ -5,10 +5,8 @@ import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
-import retrofit2.http.Url
 
 interface ApiServiceInit {
     @GET("/routes/")
@@ -29,7 +27,13 @@ interface ApiServiceMain {
         @Field("devavs") devavs: String,
         @Field("devaid") devaid: String
     ): Response<TokenResponse>
+}
 
+interface ApiServiceBrand {
+    @GET("/catalog/brands/")
+    suspend fun getBrands(
+        @Query("token") token: String
+    ): Response<List<BrandResponse>>
 }
 
 data class RouteResponse(
@@ -40,4 +44,10 @@ data class RouteResponse(
 data class TokenResponse(
     @SerializedName("token")
     val token: String
+)
+
+data class BrandResponse(
+    val brandId: Int,
+    val brandName: String,
+    val brandImage: String
 )

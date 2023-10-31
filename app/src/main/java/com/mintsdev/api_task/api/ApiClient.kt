@@ -3,7 +3,6 @@ package com.mintsdev.api_task.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 object ApiClientInit {
     val apiServiceInit: ApiServiceInit by lazy {
