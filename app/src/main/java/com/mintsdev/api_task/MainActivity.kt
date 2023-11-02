@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.mintsdev.api_task.datastore.StoreManager
 import com.mintsdev.api_task.ui.theme.Api_taskTheme
 import com.mintsdev.api_task.ui.theme.screens.CatalogScreen
 import com.mintsdev.api_task.ui.theme.screens.InitializeScreen
@@ -19,6 +20,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
             val navController = rememberNavController()
 
             Api_taskTheme {
@@ -26,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     composable("initializeScreen") {
                         InitializeScreen(
                             viewModel = InitializeScreenViewModel(),
-                            navController = navController
+                            navController = navController,
                         )
                     }
                     composable("loginScreen") {
@@ -38,7 +40,8 @@ class MainActivity : ComponentActivity() {
                     composable("catalogScreen"){
                         CatalogScreen(
                             viewModel = CatalogViewModel(application),
-                            navController = navController
+                            navController = navController,
+                            context = this@MainActivity
                         )
                     }
                 }

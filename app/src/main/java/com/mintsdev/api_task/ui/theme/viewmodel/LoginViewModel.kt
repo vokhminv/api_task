@@ -2,6 +2,7 @@ package com.mintsdev.api_task.ui.theme.viewmodel
 
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -33,7 +34,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                     val token = tokenResponse?.token
                     _token.value = token
                     Log.d("saveToken", "SaveToken")
-                    storeManager.saveToken(token.toString())
+                    storeManager.saveTokenKey()
 
 
                 } else {

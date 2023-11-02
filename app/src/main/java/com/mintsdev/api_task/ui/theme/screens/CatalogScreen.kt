@@ -1,5 +1,6 @@
 package com.mintsdev.api_task.ui.theme.screens
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,11 +20,11 @@ import com.mintsdev.api_task.ui.theme.viewmodel.CatalogViewModel
 
 
 @Composable
-fun CatalogScreen(viewModel: CatalogViewModel, navController: NavController){
+fun CatalogScreen(viewModel: CatalogViewModel, navController: NavController, context: Context){
     var storedToken by remember { mutableStateOf<String?>(null) }
 
     LaunchedEffect(Unit){
-        storedToken = viewModel.getStoredToken().toString()
+        storedToken = viewModel.tokenFlow.toString()
     }
     Column(
         modifier = Modifier
