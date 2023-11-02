@@ -7,6 +7,9 @@ import com.mintsdev.api_task.datastore.StoreManager
 import kotlinx.coroutines.flow.Flow
 
 class CatalogViewModel(application: Application) : AndroidViewModel(application) {
-    var tokenFlow = StoreManager.getTokenKey()
+    private val context = application.applicationContext
+
+    var tokenFlow = StoreManager.getTokenKey(context)
+
 
 }

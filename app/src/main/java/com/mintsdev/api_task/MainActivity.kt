@@ -40,8 +40,7 @@ class MainActivity : ComponentActivity() {
                     composable("catalogScreen"){
                         CatalogScreen(
                             viewModel = CatalogViewModel(application),
-                            navController = navController,
-                            context = this@MainActivity
+                            navController = navController
                         )
                     }
                 }
