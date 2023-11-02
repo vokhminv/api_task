@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("catalogScreen"){
                         CatalogScreen(
-                            viewModel = CatalogViewModel(),
+                            viewModel = CatalogViewModel(application),
                             navController = navController
                         )
                     }

@@ -6,25 +6,31 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 
-class StoreManager(private val context: Context) {
 
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("data_store")
+object StoreManager {
 
-    companion object {
-        val KEY_TOKEN = stringPreferencesKey("token_key")
+    private lateinit var dataStore: DataStore<Preferences>
+
+    fun initialize(context: Context) {
+        dataStore = context.createDataStore(name = "data_store")
     }
 
-    suspend fun saveToken(token: String) {
-        context.dataStore.edit { preferences ->
+    suspend fun saveToken(context: Context, token: String) {
+        dataStore.edit { preferences ->
             preferences[KEY_TOKEN] = token
         }
     }
 
-    suspend fun getToken(): String? {
-        val preferences = context.dataStore.data.first()
-        return preferences[KEY_TOKEN]
+    fun getTokenFlow(context: Context): Flow<String?> {
+        return dataStore.data.map { preferences ->
+            preferences[KEY_TOKEN] ?: ""
+        }
     }
+
+    private val KEY_TOKEN = stringPreferencesKey("token_key")
 }

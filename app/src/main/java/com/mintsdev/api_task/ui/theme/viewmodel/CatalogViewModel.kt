@@ -1,8 +1,15 @@
 package com.mintsdev.api_task.ui.theme.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
+import com.mintsdev.api_task.datastore.StoreManager
+import kotlinx.coroutines.flow.Flow
 
-class CatalogViewModel : ViewModel() {
-
+class CatalogViewModel(application: Application) : AndroidViewModel(application) {
+    private val storeManager = StoreManager
+    suspend fun getStoredToken(): Flow<String?> {
+        return storeManager.getTokenFlow()
+    }
 
 }

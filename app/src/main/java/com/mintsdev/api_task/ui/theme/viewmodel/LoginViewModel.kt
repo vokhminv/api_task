@@ -2,6 +2,7 @@ package com.mintsdev.api_task.ui.theme.viewmodel
 
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -11,7 +12,7 @@ import com.mintsdev.api_task.datastore.StoreManager
 import kotlinx.coroutines.launch
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
-    private val storeManager = StoreManager(application)
+    private val storeManager = StoreManager
 
     private val _token = MutableLiveData<String?>()
     val token: MutableLiveData<String?> = _token
@@ -31,10 +32,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                     val tokenResponse = response.body()
                     val token = tokenResponse?.token
                     _token.value = token
+                    Log.d("saveToken", "SaveToken")
+                    storeManager.saveToken(token.toString())
 
-                    if (token != null) {
-                        storeManager.saveToken(token)
-                    }
+
                 } else {
                     _token.value = "Unavailable"
                 }
@@ -43,5 +44,6 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+
 
 }
