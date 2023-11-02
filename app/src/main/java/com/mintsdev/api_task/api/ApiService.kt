@@ -43,7 +43,7 @@ data class RouteResponse(
 
 data class TokenResponse(
     @SerializedName("token")
-    val token: String
+    val token: String? = ""
 )
 
 data class BrandResponse(
