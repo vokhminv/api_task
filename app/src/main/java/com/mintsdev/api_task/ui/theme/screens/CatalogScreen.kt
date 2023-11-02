@@ -35,6 +35,6 @@ fun CatalogScreen(viewModel: CatalogViewModel, navController: NavController){
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Текущий токен: $storedToken")
+        Text("Token: $storedToken")
     }
 }
