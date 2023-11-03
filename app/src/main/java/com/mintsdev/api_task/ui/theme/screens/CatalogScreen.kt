@@ -10,10 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -29,25 +30,32 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.mintsdev.api_task.R
-import com.mintsdev.api_task.api.BrandResponse
+import coil.compose.rememberImagePainter
+import com.mintsdev.api_task.api.BrandData
+import com.mintsdev.api_task.api.Brands
 import com.mintsdev.api_task.ui.theme.viewmodel.CatalogViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CatalogScreen(viewModel: CatalogViewModel, navController: NavController) {
-    val storedToken by viewModel.tokenFlow.collectAsState(initial = null)
+fun CatalogScreen(viewModel: CatalogViewModel, navController: NavController, brands: Brands) {
+    val brandData: BrandData? by viewModel.brandData.observeAsState(null)
+    LaunchedEffect(Unit) {
+        if (brandData == null) {
+            viewModel.loadCatalog()
+        }
+    }
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -57,31 +65,34 @@ fun CatalogScreen(viewModel: CatalogViewModel, navController: NavController) {
                     }) {
                         Icon(
                             Icons.Default.ArrowBack,
-                            contentDescription = "ArrowBack")
+                            contentDescription = "ArrowBack"
+                        )
                     }
                 },
                 actions = {
                     IconButton(onClick = { }) {
                         Icon(
                             Icons.Default.Search,
-                            contentDescription = "Search")
+                            contentDescription = "Search"
+                        )
                     }
                     IconButton(onClick = { }) {
                         Icon(
                             Icons.Default.Settings,
-                            contentDescription = "Settings")
+                            contentDescription = "Settings"
+                        )
                     }
-
                 },
                 title = {
                     Text(
                         fontSize = 12.sp,
-                        text = "Token: $storedToken")
+                        text = "Catalog"
+                    )
                 }
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {}) {
+            FloatingActionButton(onClick = { }) {
                 Icon(Icons.Default.Add, contentDescription = "Add")
             }
         }
@@ -95,45 +106,45 @@ fun CatalogScreen(viewModel: CatalogViewModel, navController: NavController) {
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(16.dp),
                 columns = GridCells.Adaptive(minSize = 128.dp)
-            ){
-                items(count = 50) { cardData ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        shape = RoundedCornerShape(16.dp)
-                    ) {
-                        Column(
+            ) {
+                if (brandData != null) {
+                    items(brands.brands.values.toList()) { brand ->
+                        Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .wrapContentSize(Alignment.Center)
+                                .padding(8.dp),
+                            shape = RoundedCornerShape(16.dp)
                         ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                                contentDescription = null,
+                            Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(85.dp)
-                                    .width(85.dp)
-                                    .clip(shape = RoundedCornerShape(16.dp)),
-                                contentScale = ContentScale.Fit
-                            )
+                                    .wrapContentSize(Alignment.Center)
+                            ) {
+                                val painter = rememberImagePainter(data = brand.brandImage)
+                                Image(
+                                    painter = painter,
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .size(200.dp)
+                                        .clip(shape = RoundedCornerShape(16.dp)),
+                                    contentScale = ContentScale.Fit
+                                )
 
-                            Spacer(modifier = Modifier.height(8.dp))
+                                Spacer(modifier = Modifier.height(8.dp))
 
-                            Text(
-                                text = "BrandResponse.brandName",
-                                fontSize = 18.sp,
-                                modifier = Modifier
-                                    .align(Alignment.CenterHorizontally))
-                            Spacer(modifier = Modifier.height(8.dp))
+                                Text(
+                                    text = brand.brandName,
+                                    fontSize = 18.sp,
+                                    modifier = Modifier
+                                        .align(Alignment.CenterHorizontally)
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
+                            }
                         }
                     }
                 }
             }
         }
     }
-
-
-
 }

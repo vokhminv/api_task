@@ -6,7 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.mintsdev.api_task.datastore.StoreManager
+import com.mintsdev.api_task.api.BrandData
+import com.mintsdev.api_task.api.Brands
 import com.mintsdev.api_task.ui.theme.Api_taskTheme
 import com.mintsdev.api_task.ui.theme.screens.CatalogScreen
 import com.mintsdev.api_task.ui.theme.screens.InitializeScreen
@@ -23,6 +24,7 @@ class MainActivity : ComponentActivity() {
 
             val navController = rememberNavController()
 
+
             Api_taskTheme {
                 NavHost(navController = navController, startDestination = "initializeScreen") {
                     composable("initializeScreen") {
@@ -38,9 +40,11 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable("catalogScreen"){
+
                         CatalogScreen(
                             viewModel = CatalogViewModel(application),
-                            navController = navController
+                            navController = navController,
+                            brands = Brands
                         )
                     }
                 }

@@ -1,5 +1,6 @@
 package com.mintsdev.api_task.api
 
+
 object AppInfo {
     const val appName = "cuton"
     const val v = 36
@@ -12,4 +13,8 @@ object AuthInfo {
     const val devmod = "RedmiNote8"
     const val devavs = "Q"
     const val devaid = "31"
+}
+
+object TokenObj {
+    const val tokenobj = "MzgwOTM4ODQ1Mzk06T1Wbh"
 }
