@@ -46,7 +46,7 @@ data class TokenResponse(
 
 
 data class Brands(
-    val brands: Map<Int,BrandData>
+    val brands: Map<String,BrandData>
 )
 
 data class BrandData(

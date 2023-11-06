@@ -43,8 +43,7 @@ class MainActivity : ComponentActivity() {
 
                         CatalogScreen(
                             viewModel = CatalogViewModel(application),
-                            navController = navController,
-                            brands = Brands
+                            navController = navController
                         )
                     }
                 }

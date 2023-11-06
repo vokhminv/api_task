@@ -1,5 +1,6 @@
 package com.mintsdev.api_task.ui.theme.screens
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,30 +32,33 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.mintsdev.api_task.api.BrandData
-import com.mintsdev.api_task.api.Brands
 import com.mintsdev.api_task.ui.theme.viewmodel.CatalogViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CatalogScreen(viewModel: CatalogViewModel, navController: NavController, brands: Brands) {
-    val brandData: BrandData? by viewModel.brandData.observeAsState(null)
-    LaunchedEffect(Unit) {
-        if (brandData == null) {
-            viewModel.loadCatalog()
-        }
+fun CatalogScreen(viewModel: CatalogViewModel, navController: NavController) {
+    val brandsData: State<Map<String, BrandData>?> = viewModel.brandsData.observeAsState()
+    val key by rememberUpdatedState(true)
+
+    LaunchedEffect(key) {
+        viewModel.loadCatalog()
     }
     Scaffold(
         topBar = {
@@ -85,7 +89,7 @@ fun CatalogScreen(viewModel: CatalogViewModel, navController: NavController, bra
                 },
                 title = {
                     Text(
-                        fontSize = 12.sp,
+                        fontSize = 16.sp,
                         text = "Catalog"
                     )
                 }
@@ -107,8 +111,11 @@ fun CatalogScreen(viewModel: CatalogViewModel, navController: NavController, bra
                 contentPadding = PaddingValues(16.dp),
                 columns = GridCells.Adaptive(minSize = 128.dp)
             ) {
-                if (brandData != null) {
-                    items(brands.brands.values.toList()) { brand ->
+                brandsData.value?.let { brands ->
+                    Log.d("CatalogScreen", "Received ${brands.size} brands")
+                    val brandKeys = brands.keys.toList()
+                    items(brandKeys) { brandKey ->
+                        val brand = brands[brandKey]
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -120,13 +127,13 @@ fun CatalogScreen(viewModel: CatalogViewModel, navController: NavController, bra
                                     .fillMaxWidth()
                                     .wrapContentSize(Alignment.Center)
                             ) {
-                                val painter = rememberImagePainter(data = brand.brandImage)
+                                val painter = rememberImagePainter(data = brand!!.brandImage)
                                 Image(
                                     painter = painter,
                                     contentDescription = null,
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .size(200.dp)
+                                        .size(100.dp)
                                         .clip(shape = RoundedCornerShape(16.dp)),
                                     contentScale = ContentScale.Fit
                                 )
@@ -139,6 +146,7 @@ fun CatalogScreen(viewModel: CatalogViewModel, navController: NavController, bra
                                     modifier = Modifier
                                         .align(Alignment.CenterHorizontally)
                                 )
+
                                 Spacer(modifier = Modifier.height(8.dp))
                             }
                         }

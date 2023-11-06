@@ -13,36 +13,47 @@ import com.mintsdev.api_task.api.Brands
 import com.mintsdev.api_task.api.TokenObj
 import com.mintsdev.api_task.datastore.StoreManager
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class CatalogViewModel(application: Application) : AndroidViewModel(application) {
+
+    init {
+        Log.d("CatalogViewModel", "ViewModel created")
+    }
 
     @SuppressLint("StaticFieldLeak")
     private val context = application.applicationContext
     private val tokenFlow = StoreManager.getTokenKey(context)
 
-    private val _brandData = MutableLiveData<BrandData>()
-    val brandData: LiveData<BrandData> = _brandData
+    private val _brandsData = MutableLiveData<Map<String, BrandData>?>()
+    val brandsData: MutableLiveData<Map<String, BrandData>?> = _brandsData
 
-    @SuppressLint("NullSafeMutableLiveData")
+
     fun loadCatalog() {
-        Log.d("LoadCatalog", "LoadCatalog")
+        Log.d("CatalogViewModel", "loadCatalog called")
         viewModelScope.launch {
             try {
-                val token = tokenFlow
-                val response = ApiClientMain.apiServiceMain.getBrands(TokenObj.tokenobj)
+
+                val response = fetchBrandsData()
                 if (response.isSuccessful) {
-                    val brandList = response.body()
-                    if (brandList != null && brandList.brands.isNotEmpty()) {
-                        _brandData.value = brandList.brands.values.first()
+                    val brands = response.body()?.brands
+                    if (brands != null) {
+                        _brandsData.value = brands
                         Log.d("response_success", "response_success")
+                        for ((brandKey, brandData) in brands) {
+                            Log.d("BrandData", "Key: $brandKey, BrandName: ${brandData.brandName}, BrandId: ${brandData.brandId}, BrandImg: ${brandData.brandImage}")
+                        }
                     }
                 } else {
-                    // API error here
+                    Log.d("response_unsuccessfully", "response_unsuccessfully")
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                _brandData.value = null
             }
         }
+    }
+
+    private suspend fun fetchBrandsData(): Response<Brands> {
+        return ApiClientMain.apiServiceMain.getBrands(TokenObj.tokenobj)
     }
 }
